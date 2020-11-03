@@ -1,6 +1,7 @@
 ---
 - name: Check aws-cli already installed
-  local_action: "stat path=/usr/local/bin/aws"
+  stat:
+    path: /usr/local/bin/aws
   register: aws_cli
 
 - name: Download aws-cli archive
