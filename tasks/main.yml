@@ -1,0 +1,23 @@
+---
+- name: Check aws-cli already installed
+  local_action: "stat path=/usr/local/bin/aws"
+  register: aws_cli
+
+- name: Download aws-cli archive
+  get_url:
+    url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: "/tmp/awscliv2.zip"
+  when: not aws_cli.stat.exists
+
+- name: Unpack aws-cli
+  unarchive:
+    remote_src: yes
+    src: "/tmp/awscliv2.zip"
+    dest: "/tmp"
+  when: not aws_cli.stat.exists
+
+- name: install aws-cli
+  command:
+    cmd: "sh /tmp/aws/install"
+    creates: "/usr/local/bin/aws"
+
